@@ -1045,7 +1045,9 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VALID_ARCHS = "arm64 armv4t armv5 armv6 armv6m armv7 armv7em armv7f armv7m armv7s xscale";
+				"VALID_ARCHS[sdk=iphoneos*]" = "arm64 armv4t armv5 armv6 armv6m armv7 armv7em armv7f armv7m armv7s";
+				"VALID_ARCHS[sdk=iphonesimulator*]" = "i386 x86_64";
+				"VALID_ARCHS[sdk=macosx*]" = "i386 x86_64";
 			};
 			name = Debug;
 		};
@@ -1084,7 +1086,10 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
-				VALID_ARCHS = "arm64 armv4t armv5 armv6 armv6m armv7 armv7em armv7f armv7m armv7s xscale";
+				VALID_ARCHS = "arm64 armv4t armv5 armv6 armv6m armv7 armv7em armv7f armv7m armv7s";
+				"VALID_ARCHS[sdk=iphoneos*]" = "arm64 armv4t armv5 armv6 armv6m armv7 armv7em armv7f armv7m armv7s";
+				"VALID_ARCHS[sdk=iphonesimulator*]" = "i386 x86_64";
+				"VALID_ARCHS[sdk=macosx*]" = "i386 x86_64";
 			};
 			name = Release;
 		};
@@ -1107,7 +1112,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_INSTALLED_PRODUCT = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				VALID_ARCHS = "arm64 armv4t armv5 armv6 armv6m armv7 armv7em armv7f armv7m armv7s xscale x86_64";
 			};
 			name = Debug;
 		};
@@ -1125,7 +1129,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.SimpleTunnel";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_INSTALLED_PRODUCT = NO;
-				VALID_ARCHS = "arm64 armv4t armv5 armv6 armv6m armv7 armv7em armv7f armv7m armv7s xscale x86_64";
 			};
 			name = Release;
 		};
