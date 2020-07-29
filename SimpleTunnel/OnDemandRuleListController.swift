@@ -27,13 +27,13 @@ class OnDemandRuleListController: ListViewController {
 		return targetManager.onDemandRules?.count ?? 0
 	}
 
-	/// Returns UITableViewCellAccessoryType.DetailButton
-	override var listAccessoryType: UITableViewCellAccessoryType {
+	/// Returns UITableViewCell.AccessoryType.DetailButton
+	override var listAccessoryType: UITableViewCell.AccessoryType {
 		return .detailButton
 	}
 
-	/// Returns UITableViewCellAccessoryType.DetailButton
-	override var listEditingAccessoryType: UITableViewCellAccessoryType {
+	/// Returns UITableViewCell.AccessoryType.DetailButton
+	override var listEditingAccessoryType: UITableViewCell.AccessoryType {
 		return .detailButton
 	}
 

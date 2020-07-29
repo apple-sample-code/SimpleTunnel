@@ -61,7 +61,7 @@ class ClientAppProxyConnection : Connection {
 	}
 
 	/// Handle errors that occur on the connection.
-	func handleErrorCondition(_ flowError: NEAppProxyErrorDomain? = nil, notifyServer: Bool = true) {
+	func handleErrorCondition(_ flowError: NEAppProxyFlowError? = nil, notifyServer: Bool = true) {
 
 		guard !isClosedCompletely else { return }
 
@@ -101,13 +101,13 @@ class ClientAppProxyConnection : Connection {
 	override func handleOpenCompleted(_ resultCode: TunnelConnectionOpenResult, properties: [NSObject: AnyObject]) {
 		guard resultCode == .success else {
 			simpleTunnelLog("Failed to open \(identifier), result = \(resultCode)")
-			handleErrorCondition(.peerReset, notifyServer: false)
+			handleErrorCondition(NEAppProxyFlowError(.peerReset), notifyServer: false)
 			return
 		}
 
 		guard let localAddress = (tunnel as? ClientTunnel)?.connection!.localAddress as? NWHostEndpoint else {
 			simpleTunnelLog("Failed to get localAddress.")
-			handleErrorCondition(.internal)
+			handleErrorCondition(NEAppProxyFlowError(.internal))
 			return
 		}
 
@@ -121,12 +121,12 @@ class ClientAppProxyConnection : Connection {
 		self.closeConnection(direction, flowError: nil)
 	}
 
-	func closeConnection(_ direction: TunnelConnectionCloseDirection, flowError: NEAppProxyErrorDomain?) {
+	func closeConnection(_ direction: TunnelConnectionCloseDirection, flowError: NEAppProxyFlowError?) {
 		super.closeConnection(direction)
 
 		var error: NSError?
 		if let ferror = flowError {
-			error = NSError(domain: NEAppProxyErrorDomain, code: ferror.rawValue, userInfo: nil)
+			error = NSError(domain: NEAppProxyErrorDomain, code: ferror.code.rawValue, userInfo: nil)
 		}
 
 		if isClosedForWrite {
@@ -170,15 +170,15 @@ class ClientAppProxyTCPConnection : ClientAppProxyConnection {
 	override func handleSendResult(_ error: NSError?) {
 		if let sendError = error {
 			simpleTunnelLog("Failed to send Data Message to the Tunnel Server. error = \(sendError)")
-			handleErrorCondition(.hostUnreachable)
+			handleErrorCondition(NEAppProxyFlowError(.hostUnreachable))
 			return
 		}
 
 		// Read another chunk of data from the source application.
 		TCPFlow.readData { data, readError in
 			guard let readData = data , readError == nil else {
-				simpleTunnelLog("Failed to read data from the TCP flow. error = \(readError)")
-				self.handleErrorCondition(.peerReset)
+				simpleTunnelLog("Failed to read data from the TCP flow. error = \(String(describing: readError))")
+				self.handleErrorCondition(NEAppProxyFlowError(.peerReset))
 				return
 			}
 
@@ -239,7 +239,7 @@ class ClientAppProxyUDPConnection : ClientAppProxyConnection {
 
 		if let sendError = error {
 			simpleTunnelLog("Failed to send message to Tunnel Server. error = \(sendError)")
-			handleErrorCondition(.hostUnreachable)
+			handleErrorCondition(NEAppProxyFlowError(.hostUnreachable))
 			return
 		}
 
@@ -257,8 +257,8 @@ class ClientAppProxyUDPConnection : ClientAppProxyConnection {
 				let readEndpoints = remoteEndPoints
 				, readError == nil else
 			{
-				simpleTunnelLog("Failed to read data from the UDP flow. error = \(readError)")
-				self.handleErrorCondition(.peerReset)
+				simpleTunnelLog("Failed to read data from the UDP flow. error = \(String(describing: readError))")
+				self.handleErrorCondition(NEAppProxyFlowError(.peerReset))
 				return
 			}
 

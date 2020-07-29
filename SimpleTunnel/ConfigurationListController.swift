@@ -137,13 +137,13 @@ class ConfigurationListController: ListViewController {
 		}
 	}
 
-	/// Returns UITableViewCellAccessoryType.DisclosureIndicator.
-	override var listAccessoryType: UITableViewCellAccessoryType {
+	/// Returns UITableViewCell.AccessoryType.DisclosureIndicator.
+	override var listAccessoryType: UITableViewCell.AccessoryType {
 		return .disclosureIndicator
 	}
 
-	/// Returns UITableViewCellAccessoryType.DetailButton.
-	override var listEditingAccessoryType: UITableViewCellAccessoryType {
+	/// Returns UITableViewCell.AccessoryType.DetailButton.
+	override var listEditingAccessoryType: UITableViewCell.AccessoryType {
 		return .detailButton
 	}
 

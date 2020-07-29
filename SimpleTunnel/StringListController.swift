@@ -33,8 +33,8 @@ class StringListController: ListViewController {
 		return targetStrings.count 
 	}
 
-	/// Returns UITableViewCellSelectionStyle.None
-	override var listCellSelectionStyle: UITableViewCellSelectionStyle {
+	/// Returns UITableViewCell.SelectionStyle.None
+	override var listCellSelectionStyle: UITableViewCell.SelectionStyle {
 		return .none
 	}
 
