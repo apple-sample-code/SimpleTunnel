@@ -98,8 +98,12 @@ open class ClientTunnel: Tunnel {
 				self.closeTunnelWithError(readError as NSError?)
 				return
 			}
-
-			let lengthData = data
+			
+			guard let lengthData = data else {
+				simpleTunnelLog("no lengthData")
+				self.closeTunnelWithError(NSError.init(domain: "foo", code: 42, userInfo: nil))
+				return
+			}
 
 			guard lengthData.count == MemoryLayout<UInt32>.size else {
 				simpleTunnelLog("Length data length (\(lengthData.count)) != sizeof(UInt32) (\(MemoryLayout<UInt32>.size)")
@@ -126,7 +130,11 @@ open class ClientTunnel: Tunnel {
 					return
 				}
 
-				let payloadData = data
+				guard let payloadData = data else {
+					simpleTunnelLog("no payloadData")
+					self.closeTunnelWithError(NSError.init(domain: "foo", code: 42, userInfo: nil))
+					return
+				}
 
 				guard payloadData.count == Int(totalLength) else {
 					simpleTunnelLog("Payload data length (\(payloadData.count)) != payload length (\(totalLength)")
@@ -148,7 +156,9 @@ open class ClientTunnel: Tunnel {
 			return
 		}
 
-		connection?.write(messageData, completionHandler: completionHandler as! (Error?) -> Void)
+		connection?.write(messageData) {
+			completionHandler($0 as NSError?)
+		}
 	}
 
 	// MARK: NSObject
